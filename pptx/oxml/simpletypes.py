@@ -742,3 +742,26 @@ class ST_UniversalMeasure(BaseSimpleType):
         }[units_part]
         emu_value = Emu(int(round(quantity * multiplier)))
         return emu_value
+
+
+class ST_AlphaValue(BaseStringType):
+    @classmethod
+    def validate(cls, value):
+        # must be string ---------------
+        str_value = cls.validate_string(value)
+
+        # must be 1 to 6 chars long----------
+        if not 0 < len(str_value) < 7:
+            raise ValueError(
+                "Alpha transparency string must be up to six characters long, got '%s'"
+                % str_value
+            )
+
+        # must parse as int --------
+        try:
+            int(str_value)
+        except ValueError:
+            raise ValueError(
+                "Alpha transparency string must be valid integer string, got '%s'"
+                % str_value
+            )
